@@ -100,7 +100,9 @@ while true
     % 6 - yellow - destination
 
     [start_i, start_j] = ind2sub(size(map), start_node);
-
+    f
+    g 
+    map
     % North cell
     n_i = i-1
     n_j = j
@@ -110,12 +112,13 @@ while true
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
-    if (((map(n_i, n_j) == 4) or (map(n_i, n_j) == 3)) and (g(n_i, n_j) > (g(i, j)+1))) or (map(n_i, n_j) == 6)
+    if (((map(n_i, n_j) == 4) || (map(n_i, n_j) == 3)) && (g(n_i, n_j) > (g(i, j)+1))) || (map(n_i, n_j) == 6)
 	    g(n_i, n_j) = g(i, j) + 1
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
-    current_temp = sub2ind(f, n_i, n_j)
+    current_temp = sub2ind(size(f), n_i, n_j)
+    current_temp
     % South cell
     n_i = i+1
     n_j = j
@@ -125,13 +128,13 @@ while true
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
-    if (((map(n_i, n_j) == 4) or (map(n_i, n_j) == 3)) and (g(n_i, n_j) > (g(i, j)+1))) or (map(n_i, n_j) == 6)
+    if (((map(n_i, n_j) == 4) || (map(n_i, n_j) == 3)) && (g(n_i, n_j) > (g(i, j)+1))) || (map(n_i, n_j) == 6)
 	    g(n_i, n_j) = g(i, j) + 1
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
-    if (f(n_i, n_j) < current_temp)
-	    current_temp = sub2ind(f, n_i, n_j)
+    if (f(n_i, n_j) < f(current_temp))
+	    current_temp = sub2ind(size(f), n_i, n_j)
     end
 
  
@@ -144,13 +147,13 @@ while true
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
-    if (((map(n_i, n_j) == 4) or (map(n_i, n_j) == 3)) and (g(n_i, n_j) > (g(i, j)+1))) or (map(n_i, n_j) == 6)
+    if (((map(n_i, n_j) == 4) || (map(n_i, n_j) == 3)) && (g(n_i, n_j) > (g(i, j)+1))) || (map(n_i, n_j) == 6)
 	    g(n_i, n_j) = g(i, j) + 1
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
-    if (f(n_i, n_j) < current_temp)
-	    current_temp = sub2ind(f, n_i, n_j)
+    if (f(n_i, n_j) < f(current_temp))
+	    current_temp = sub2ind(size(f), n_i, n_j)
     end
 
 
@@ -163,13 +166,13 @@ while true
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
-    if (((map(n_i, n_j) == 4) or (map(n_i, n_j) == 3)) and (g(n_i, n_j) > (g(i, j)+1))) or (map(n_i, n_j) == 6)
+    if (((map(n_i, n_j) == 4) || (map(n_i, n_j) == 3)) && (g(n_i, n_j) > (g(i, j)+1))) || (map(n_i, n_j) == 6)
 	    g(n_i, n_j) = g(i, j) + 1
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
-    if (f(n_i, n_j) < current_temp)
-	    current_temp = sub2ind(f, n_i, n_j)
+    if (f(n_i, n_j) < f(current_temp))
+	    current_temp = sub2ind(size(f), n_i, n_j)
     end
 
     % Updating the current node
