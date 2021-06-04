@@ -1,4 +1,4 @@
-function [route,numExpanded] = Astarmap (input_map, start_coords, target_coords)
+function [route_with_diagonal,numExpanded_with_diagonal] = Astarmap_with_diagonal (input_map, start_coords, target_coords)
 % set up color map for display
 % 1 - white - clear cell
 % 2 - black - obstacle
@@ -55,10 +55,10 @@ g(start_node) = 0;
 f(start_node) = H(start_node);
 
 % keep track of the number of nodes that are expanded
-numExpanded = 0;
+numExpanded_with_diagonal = 0;
 
 % Main Loop
-
+seconds_pause = 1;
 while true
     
     % Draw current map
@@ -119,25 +119,26 @@ while true
     end
     current_temp = sub2ind(size(f), n_i, n_j)
     current_temp
-    % South cell
-    n_i = i+1
-    n_j = j
+    
+    
+    % North-West cell
+    n_i = i-1
+    n_j = j-1
     if map(n_i, n_j) == 1
 	    map(n_i, n_j) = 4
-	    g(n_i, n_j) = g(current) + 1
+	    g(n_i, n_j) = g(current) + 1.4
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
     if (((map(n_i, n_j) == 4) || (map(n_i, n_j) == 3)) && (g(n_i, n_j) > (g(i, j)+1))) || (map(n_i, n_j) == 6)
-	    g(n_i, n_j) = g(i, j) + 1
+	    g(n_i, n_j) = g(i, j) + 1.4
 	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
 	    parent(n_i, n_j) = current
     end
     if (f(n_i, n_j) < f(current_temp))
 	    current_temp = sub2ind(size(f), n_i, n_j)
     end
-
- 
+    
     % West cell
     n_i = i
     n_j = j-1
@@ -155,8 +156,61 @@ while true
     if (f(n_i, n_j) < f(current_temp))
 	    current_temp = sub2ind(size(f), n_i, n_j)
     end
-
-
+    
+    % South-West cell
+    n_i = i+1
+    n_j = j-1
+    if map(n_i, n_j) == 1
+	    map(n_i, n_j) = 4
+	    g(n_i, n_j) = g(current) + 1.4
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
+    end
+    if (((map(n_i, n_j) == 4) || (map(n_i, n_j) == 3)) && (g(n_i, n_j) > (g(i, j)+1))) || (map(n_i, n_j) == 6)
+	    g(n_i, n_j) = g(i, j) + 1.4
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
+    end
+    if (f(n_i, n_j) < f(current_temp))
+	    current_temp = sub2ind(size(f), n_i, n_j)
+    end
+    
+    % South cell
+    n_i = i+1
+    n_j = j
+    if map(n_i, n_j) == 1
+	    map(n_i, n_j) = 4
+	    g(n_i, n_j) = g(current) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
+    end
+    if (((map(n_i, n_j) == 4) || (map(n_i, n_j) == 3)) && (g(n_i, n_j) > (g(i, j)+1))) || (map(n_i, n_j) == 6)
+	    g(n_i, n_j) = g(i, j) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
+    end
+    if (f(n_i, n_j) < f(current_temp))
+	    current_temp = sub2ind(size(f), n_i, n_j)
+    end
+    
+    % South-East cell
+    n_i = i+1
+    n_j = j+1
+    if map(n_i, n_j) == 1
+	    map(n_i, n_j) = 4
+	    g(n_i, n_j) = g(current) + 1.4
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
+    end
+    if (((map(n_i, n_j) == 4) || (map(n_i, n_j) == 3)) && (g(n_i, n_j) > (g(i, j)+1))) || (map(n_i, n_j) == 6)
+	    g(n_i, n_j) = g(i, j) + 1.4
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
+    end
+    if (f(n_i, n_j) < f(current_temp))
+	    current_temp = sub2ind(size(f), n_i, n_j)
+    end
+    
     % East cell
     n_i = i
     n_j = j+1
@@ -174,12 +228,30 @@ while true
     if (f(n_i, n_j) < f(current_temp))
 	    current_temp = sub2ind(size(f), n_i, n_j)
     end
-
+    
+    % North-East cell
+    n_i = i-1
+    n_j = j+1
+    if map(n_i, n_j) == 1
+	    map(n_i, n_j) = 4
+	    g(n_i, n_j) = g(current) + 1.4
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
+    end
+    if (((map(n_i, n_j) == 4) || (map(n_i, n_j) == 3)) && (g(n_i, n_j) > (g(i, j)+1))) || (map(n_i, n_j) == 6)
+	    g(n_i, n_j) = g(i, j) + 1.4
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
+    end
+    if (f(n_i, n_j) < f(current_temp))
+	    current_temp = sub2ind(size(f), n_i, n_j)
+    end
+    
     % Updating the current node
     map(current_temp) = 3
-
+    pause(seconds_pause)
     % Update the number of nodes expanded, aka literal brainfuck
-    numExpanded = numExpanded + 1;
+    numExpanded_with_diagonal = numExpanded_with_diagonal + 1;
     
     %*********************************************************************
     
@@ -187,18 +259,18 @@ end
 
 %% Construct route from start to dest by following the parent links
 if (isinf(f(target_node)))
-    route = [];
+    route_with_diagonal = [];
 else
-    route = [target_node];
+    route_with_diagonal = [target_node];
     
-    while (parent(route(1)) ~= 0)
-        route = [parent(route(1)), route];
+    while (parent(route_with_diagonal(1)) ~= 0)
+        route_with_diagonal = [parent(route_with_diagonal(1)), route_with_diagonal];
     end
 
     % Snippet of code used to visualize the map and the path
-    for q = 2:length(route) - 1        
-        map(route(q)) = 7;
-        pause(0.1);
+    for q = 2:length(route_with_diagonal) - 1        
+        map(route_with_diagonal(q)) = 7;
+        pause(0.5);
         image(1.5, 1.5, map);
         grid on;
         axis image;
