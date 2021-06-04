@@ -91,56 +91,91 @@ while true
     % *********************************************************************
     % ALL YOUR CODE BETWEEN THESE LINES OF STARS
     % Visit all of the neighbors around the current node and update the entries in the map, f, g and parent arrays
-    %
+
+    % 1 - white - clear cell
+    % 2 - black - obstacle
+    % 3 - red = visited
+    % 4 - blue  - on list
+    % 5 - green - start
+    % 6 - yellow - destination
 
     [start_i, start_j] = ind2sub(size(map), start_node);
 
-
     % North cell
-    g((i-1), j) =  abs(Y(start_i, start_j) - Y((i-1), j)) + abs(abs(X(start_i, start_j) - X(i, j)))
-    f((i-1), j) = g((i-1), j) + H((i-1), j)
-    f_min_i = i-1
-    f_min_j = j
-    if (map((i-1), j) == 1)
-	    map((i-1), j) = 4 % visited but not gone yet
+    n_i = i-1
+    n_j = j
+    if map(n_i, n_j) == 1
+	    map(n_i, n_j) = 4
+	    g(n_i, n_j) = g(current) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
     end
+    if (((map(n_i, n_j) == 4) or (map(n_i, n_j) == 3)) and (g(n_i, n_j) > (g(i, j)+1))) or (map(n_i, n_j) == 6)
+	    g(n_i, n_j) = g(i, j) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
+    end
+    current_temp = sub2ind(f, n_i, n_j)
     % South cell
-    g((i+1), j) =  abs(Y(start_i, start_j) - Y((i+1), j)) + abs(abs(X(start_i, start_j) - X(i, j)))
-    f((i+1), j) = g((i+1), j) + H((i+1), j)
-    if f((i+1), j) < f(f_min_i, f_min_j)
-	    f_min_i = i+1
-	    f_min_j = j
+    n_i = i+1
+    n_j = j
+    if map(n_i, n_j) == 1
+	    map(n_i, n_j) = 4
+	    g(n_i, n_j) = g(current) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
     end
-    if (map((i+1), j) == 1)
-	    map((i+1), j) = 4 % visited but not gone yet
+    if (((map(n_i, n_j) == 4) or (map(n_i, n_j) == 3)) and (g(n_i, n_j) > (g(i, j)+1))) or (map(n_i, n_j) == 6)
+	    g(n_i, n_j) = g(i, j) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
     end
+    if (f(n_i, n_j) < current_temp)
+	    current_temp = sub2ind(f, n_i, n_j)
+    end
+
+ 
     % West cell
-    g(i, (j-1)) =  abs(Y(start_i, start_j) - Y(i, (j-1))) + abs(abs(X(start_i, start_j) - X(i, j)))
-    f(i, (j-1)) = g(i, (j-1)) + H(i, (j-1))
-    if f(i, (j-1)) < f(f_min_i, f_min_j)
-	    f_min_i = i
-	    f_min_j = j-1
+    n_i = i
+    n_j = j-1
+    if map(n_i, n_j) == 1
+	    map(n_i, n_j) = 4
+	    g(n_i, n_j) = g(current) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
     end
-    if (map(i, (j-1)) == 1)
-	    map(i, (j-1)) = 4 % visited but not gone yet
+    if (((map(n_i, n_j) == 4) or (map(n_i, n_j) == 3)) and (g(n_i, n_j) > (g(i, j)+1))) or (map(n_i, n_j) == 6)
+	    g(n_i, n_j) = g(i, j) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
     end
+    if (f(n_i, n_j) < current_temp)
+	    current_temp = sub2ind(f, n_i, n_j)
+    end
+
+
     % East cell
-    g(i, (j+1)) =  abs(Y(start_i, start_j) - Y(i, (j+1))) + abs(abs(X(start_i, start_j) - X(i, j)))
-    f(i, (j+1)) = g(i, (j+1)) + H(i, (j+1))
-    if f(i, (j+1)) < f(f_min_i, f_min_j)
-	    f_min_i = i
-	    f_min_j = j+1
+    n_i = i
+    n_j = j+1
+    if map(n_i, n_j) == 1
+	    map(n_i, n_j) = 4
+	    g(n_i, n_j) = g(current) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
     end
-    if (map(i, (j+1)) == 1)
-	    map(i, (j+1)) = 4 % visited but not gone yet
+    if (((map(n_i, n_j) == 4) or (map(n_i, n_j) == 3)) and (g(n_i, n_j) > (g(i, j)+1))) or (map(n_i, n_j) == 6)
+	    g(n_i, n_j) = g(i, j) + 1
+	    f(n_i, n_j) = g(n_i, n_j) + H(n_i, n_j)
+	    parent(n_i, n_j) = current
     end
+    if (f(n_i, n_j) < current_temp)
+	    current_temp = sub2ind(f, n_i, n_j)
+    end
+
+    % Updating the current node
+    map(current_temp) = 3
+
     % Update the number of nodes expanded, aka literal brainfuck
-    
-
-
-
-
-
     numExpanded = numExpanded + 1;
     
     %*********************************************************************
